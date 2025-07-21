@@ -2,16 +2,14 @@
 
 import { sync } from "./sync.ts";
 
-function main() {
-  Deno.cron("obsidian-sync", "0 */60 * * * *", async () => {
+Deno.cron(
+  "obsidian-sync",
+  "0 * * * *", // Every hour
+  async () => {
     try {
       await sync();
     } catch {
       Deno.exit(1);
     }
-  });
-}
-
-if (import.meta.main) {
-  main();
-}
+  },
+);
