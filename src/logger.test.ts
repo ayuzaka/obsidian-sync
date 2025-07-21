@@ -1,5 +1,5 @@
-import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
+import { assertEquals } from "@std/assert";
+import { exists } from "@std/fs/exists";
 import { createLogger } from "./logger.ts";
 
 const TEST_LOG_DIR = "./test_logs";

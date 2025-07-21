@@ -1,5 +1,5 @@
-import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
-import { dirname } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { exists } from "@std/fs/exists";
+import { dirname } from "@std/path/dirname";
 
 export type Logger = {
   log: (message: string) => Promise<void>;

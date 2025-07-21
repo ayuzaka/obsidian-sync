@@ -1,4 +1,4 @@
-import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { join } from "@std/path/join";
 import * as z from "zod/mini";
 
 const configSchema = z.object({
