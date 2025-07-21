@@ -5,5 +5,12 @@
     "@std/fs": "jsr:@std/fs@^1.0.19",
     "@std/path": "jsr:@std/path@^1.1.1",
     "zod": "npm:zod@^4.0.5"
+  },
+  "tasks": {
+    "test": "deno test --allow-read --allow-write",
+    "format": "deno fmt",
+    "format: check": "deno fmt --check",
+    "typecheck": "deno check",
+    "run": "deno run --unstable-cron --allow-env --allow-read --allow-write --allow-run src/main.ts"
   }
 }
