@@ -1,12 +1,14 @@
 import { join } from "https://deno.land/std@0.224.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
+import * as z from "zod/mini";
 
-type Config = {
-  OBSIDIAN_VAULT_PATH: string;
-  LOG_FILE_PATH?: string;
-};
+const configSchema = z.object({
+  OBSIDIAN_VAULT_PATH: z.string().check(z.minLength(1), z.trim()),
+  LOG_FILE_PATH: z.optional(z.string().check(z.minLength(1), z.trim())),
+});
 
-export async function loadConfig(): Promise<Config> {
+type ConfigSchema = z.infer<typeof configSchema>;
+
+export async function loadConfig(): Promise<ConfigSchema> {
   const configHomeDir = Deno.env.get("XDG_CONFIG_HOME");
 
   if (!configHomeDir) {
@@ -19,34 +21,7 @@ export async function loadConfig(): Promise<Config> {
 
   try {
     const configContent = await Deno.readTextFile(configFile);
-    const parseResult = JSON.parse(configContent);
-
-    if (typeof parseResult !== "object" || parseResult === null) {
-      throw new Error("Configuration file must be a valid JSON object.");
-    }
-
-    if (
-      !(await exists(parseResult.OBSIDIAN_VAULT_PATH, { isDirectory: true }))
-    ) {
-      throw new Error(
-        `OBSIDIAN_VAULT_PATH "${parseResult.OBSIDIAN_VAULT_PATH}" does not exist or is not a directory.`,
-      );
-    }
-
-    if (
-      !parseResult.OBSIDIAN_VAULT_PATH ||
-      typeof parseResult.OBSIDIAN_VAULT_PATH !== "string"
-    ) {
-      throw new Error(
-        "Configuration file must contain OBSIDIAN_VAULT_PATH.",
-      );
-    }
-
-    if (
-      parseResult.LOG_FILE_PATH && typeof parseResult.LOG_FILE_PATH !== "string"
-    ) {
-      throw new Error("LOG_FILE_PATH must be a string if provided.");
-    }
+    const parseResult = configSchema.parse(JSON.parse(configContent));
 
     return {
       OBSIDIAN_VAULT_PATH: parseResult.OBSIDIAN_VAULT_PATH,
