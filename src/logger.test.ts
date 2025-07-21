@@ -54,7 +54,7 @@ Deno.test("Logger.log - メッセージをファイルに書き込む", async ()
 
   // Assert
   const content = await Deno.readTextFile(TEST_LOG_FILE);
-  assertEquals(content, testMessage + '\n');
+  assertEquals(content, testMessage + "\n");
 
   cleanupTestLogDir();
 });
@@ -107,7 +107,7 @@ Deno.test("Logger.log - 特殊文字を含むメッセージの処理", async ()
 
   // ファイルの内容を確認（改行文字が追加されることを確認）
   const content = await Deno.readTextFile(TEST_LOG_FILE);
-  assertEquals(content, specialMessage + '\n');
+  assertEquals(content, specialMessage + "\n");
 
   cleanupTestLogDir();
 });
@@ -125,8 +125,7 @@ Deno.test("Logger.log - 複数行の追記", async () => {
 
   // ファイルの内容を確認（すべてのメッセージが追記されていることを確認）
   const content = await Deno.readTextFile(TEST_LOG_FILE);
-  const expected =
-    "メッセージ 1\n" +
+  const expected = "メッセージ 1\n" +
     "メッセージ 2\n" +
     "メッセージ 3\n" +
     "メッセージ 4\n" +

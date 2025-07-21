@@ -6,16 +6,16 @@ export type Logger = {
 };
 
 export async function createLogger(
-  logFilePath: string
+  logFilePath: string,
 ): Promise<Logger> {
-    const logDir = dirname(logFilePath);
-    if (!(await exists(logDir))) {
-      await Deno.mkdir(logDir, { recursive: true });
-    }
+  const logDir = dirname(logFilePath);
+  if (!(await exists(logDir))) {
+    await Deno.mkdir(logDir, { recursive: true });
+  }
 
-    const log = async (message: string) => {
-      await Deno.writeTextFile(logFilePath, message + '\n', { append: true });
-    };
+  const log = async (message: string) => {
+    await Deno.writeTextFile(logFilePath, message + "\n", { append: true });
+  };
 
-    return { log };
+  return { log };
 }

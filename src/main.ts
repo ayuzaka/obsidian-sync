@@ -9,7 +9,7 @@ function main() {
     } catch {
       Deno.exit(1);
     }
-  })
+  });
 }
 
 if (import.meta.main) {

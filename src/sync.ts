@@ -18,7 +18,7 @@ export async function sync() {
 
     if (!(await exists(OBSIDIAN_VAULT_PATH, { isDirectory: true }))) {
       log(
-        `ERROR: OBSIDIAN_VAULT_PATH '${OBSIDIAN_VAULT_PATH}' does not exist or is not a directory.`
+        `ERROR: OBSIDIAN_VAULT_PATH '${OBSIDIAN_VAULT_PATH}' does not exist or is not a directory.`,
       );
       Deno.exit(1);
     }
@@ -34,8 +34,8 @@ export async function sync() {
 
     const commitMessage = `vault backup: ${new Date().toISOString()}`;
 
-    await $`git add .`
-    await $`git commit -m "${commitMessage}"`
+    await $`git add .`;
+    await $`git commit -m "${commitMessage}"`;
     await $`git pull`;
     await $`git push`;
 
