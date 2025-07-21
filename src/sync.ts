@@ -8,7 +8,11 @@ export async function sync() {
   const { log } = await createLogger(config.LOG_FILE_PATH || "sync.log");
 
   try {
-    log(`\n--- Starting sync at ${new Date().toISOString()} ---`);
+    log(
+      `\n--- Starting sync at ${
+        new Date().toLocaleString("ja-JP", { hour12: false })
+      } ---`,
+    );
 
     const { OBSIDIAN_VAULT_PATH } = config;
     if (!OBSIDIAN_VAULT_PATH) {
@@ -32,7 +36,9 @@ export async function sync() {
       return;
     }
 
-    const commitMessage = `vault backup: ${new Date().toISOString()}`;
+    const commitMessage = `vault backup: ${
+      new Date().toLocaleString("ja-JP", { hour12: false })
+    }`;
 
     await $`git add .`;
     await $`git commit -m "${commitMessage}"`;
