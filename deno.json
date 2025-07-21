@@ -1,5 +1,6 @@
 {
   "imports": {
-    "@david/dax": "jsr:@david/dax@^0.43.2"
+    "@david/dax": "jsr:@david/dax@^0.43.2",
+    "zod": "npm:zod@^4.0.5"
   }
 }

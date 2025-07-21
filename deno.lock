@@ -10,7 +10,8 @@
     "jsr:@std/fs@1": "1.0.18",
     "jsr:@std/io@0.225": "0.225.2",
     "jsr:@std/path@1": "1.1.0",
-    "jsr:@std/path@^1.1.0": "1.1.0"
+    "jsr:@std/path@^1.1.0": "1.1.0",
+    "npm:zod@^4.0.5": "4.0.5"
   },
   "jsr": {
     "@david/console-static-text@0.3.0": {
@@ -58,6 +59,11 @@
     },
     "@std/path@1.1.0": {
       "integrity": "ddc94f8e3c275627281cbc23341df6b8bcc874d70374f75fec2533521e3d6886"
+    }
+  },
+  "npm": {
+    "zod@4.0.5": {
+      "integrity": "sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA=="
     }
   },
   "remote": {
@@ -175,7 +181,8 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@david/dax@~0.43.2"
+      "jsr:@david/dax@~0.43.2",
+      "npm:zod@^4.0.5"
     ]
   }
 }
