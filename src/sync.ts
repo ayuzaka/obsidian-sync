@@ -1,10 +1,10 @@
 import $ from "@david/dax";
 import { exists } from "@std/fs/exists";
 import type { ConfigSchema } from "./config.ts";
-import { createLogger } from "./logger.ts";
+import { createOptionalLogger } from "./logger.ts";
 
 export async function sync(config: ConfigSchema): Promise<void> {
-  const { log } = await createLogger(config.LOG_FILE_PATH || "sync.log");
+  const { log } = await createOptionalLogger(config.LOG_FILE_PATH);
 
   try {
     log(

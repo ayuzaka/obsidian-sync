@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { exists } from "@std/fs/exists";
-import { createLogger } from "./logger.ts";
+import { createOptionalLogger } from "./logger.ts";
 
 const TEST_LOG_DIR = "./test_logs";
 const TEST_LOG_FILE = `${TEST_LOG_DIR}/test.log`;
@@ -13,13 +13,13 @@ async function cleanupTestLogDir() {
   }
 }
 
-Deno.test("createLogger - ログディレクトリが存在しない場合に作成される", async () => {
+Deno.test("createOptionalLogger - ログディレクトリが存在しない場合に作成される", async () => {
   // Arrange
   cleanupTestLogDir();
 
   // Act
   assertEquals(await exists(TEST_LOG_DIR), false);
-  await createLogger(TEST_LOG_FILE);
+  await createOptionalLogger(TEST_LOG_FILE);
 
   // Assert
   assertEquals(await exists(TEST_LOG_DIR), true);
@@ -27,14 +27,14 @@ Deno.test("createLogger - ログディレクトリが存在しない場合に作
   cleanupTestLogDir();
 });
 
-Deno.test("createLogger - ログディレクトリが既に存在する場合にログ出力関数が作成される", async () => {
+Deno.test("createOptionalLogger - ログディレクトリが既に存在する場合にログ出力関数が作成される", async () => {
   // Arrange
   cleanupTestLogDir();
   await Deno.mkdir(TEST_LOG_DIR, { recursive: true });
   assertEquals(await exists(TEST_LOG_DIR), true);
 
   // Act
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
 
   // Assert
   assertEquals(typeof logger.log, "function");
@@ -46,7 +46,7 @@ Deno.test("Logger.log - メッセージをファイルに書き込む", async ()
   // Arrange
   cleanupTestLogDir();
 
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
   const testMessage = "テストメッセージ";
 
   // Act
@@ -63,7 +63,7 @@ Deno.test("Logger.log - 複数回の書き込み（追記モードの確認）",
   // Arrange
   cleanupTestLogDir();
 
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
 
   // 最初のメッセージを書き込み
   await logger.log("最初のメッセージ");
@@ -82,7 +82,7 @@ Deno.test("Logger.log - 空文字列の処理", async () => {
   // Arrange
   cleanupTestLogDir();
 
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
 
   // 空文字列を書き込み
   await logger.log("");
@@ -99,7 +99,7 @@ Deno.test("Logger.log - 特殊文字を含むメッセージの処理", async ()
   // Arrange
   cleanupTestLogDir();
 
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
   const specialMessage = "特殊文字: 🚀 改行\n タブ\t 引用符\"'";
 
   // 特殊文字を含むメッセージを書き込み
@@ -116,7 +116,7 @@ Deno.test("Logger.log - 複数行の追記", async () => {
   // Arrange
   cleanupTestLogDir();
 
-  const logger = await createLogger(TEST_LOG_FILE);
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
 
   // 複数のメッセージを書き込み
   for (let i = 1; i <= 5; i++) {
@@ -132,6 +132,52 @@ Deno.test("Logger.log - 複数行の追記", async () => {
     "メッセージ 5\n";
 
   assertEquals(content, expected);
+
+  cleanupTestLogDir();
+});
+
+Deno.test("createOptionalLogger - ログファイルパスが提供された場合は通常のloggerを返す", async () => {
+  // Arrange
+  cleanupTestLogDir();
+
+  // Act
+  const logger = await createOptionalLogger(TEST_LOG_FILE);
+  await logger.log("テストメッセージ");
+
+  // Assert
+  assertEquals(await exists(TEST_LOG_FILE), true);
+  const content = await Deno.readTextFile(TEST_LOG_FILE);
+  assertEquals(content, "テストメッセージ\n");
+
+  cleanupTestLogDir();
+});
+
+Deno.test("createOptionalLogger - ログファイルパスがundefinedの場合はno-opのloggerを返す", async () => {
+  // Arrange
+  cleanupTestLogDir();
+
+  // Act
+  const logger = await createOptionalLogger(undefined);
+  await logger.log("このメッセージは出力されない");
+
+  // Assert
+  assertEquals(await exists(TEST_LOG_FILE), false);
+  assertEquals(await exists(TEST_LOG_DIR), false);
+
+  cleanupTestLogDir();
+});
+
+Deno.test("createOptionalLogger - 空文字列の場合はno-opのloggerを返す", async () => {
+  // Arrange
+  cleanupTestLogDir();
+
+  // Act
+  const logger = await createOptionalLogger("");
+  await logger.log("このメッセージは出力されない");
+
+  // Assert
+  assertEquals(await exists(TEST_LOG_FILE), false);
+  assertEquals(await exists(TEST_LOG_DIR), false);
 
   cleanupTestLogDir();
 });
