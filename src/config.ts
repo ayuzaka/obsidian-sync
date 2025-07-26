@@ -5,7 +5,7 @@ const configSchema = z.object({
   OBSIDIAN_VAULT_PATH: z.string().check(z.minLength(1), z.trim()),
   LOG_FILE_PATH: z.optional(z.string().check(z.minLength(1), z.trim())),
   SYNC_INTERVAL_MINUTES: z._default(
-    z.optional(z.number().check(z.lte(60), z.gte(1))),
+    z.optional(z.number().check(z.lte(1440), z.gte(1))),
     60,
   ),
 });
