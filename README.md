@@ -49,22 +49,16 @@ Next, create the configuration file with the following content:
 
 ### 2. Run the Tool
 
-You can run the synchronization process in either the foreground or the background.
+There are three main commands to manage the synchronization process:
 
-### Foreground
+- `deno task start`: Starts the synchronization process in the background.
+- `deno task stop`: Stops the background synchronization process.
+- `deno task watch`: Starts the synchronization process in the foreground. This is useful for debugging or monitoring.
 
-To run the process in the foreground and see the output directly, use the following command:
-
-```sh
-deno task run
-```
-
-### Background
-
-To run the process in the background, so it continues to run after you close the terminal, use `nohup`:
+To start syncing your vault, run:
 
 ```sh
-nohup deno task run &
+deno task start
 ```
 
-This will start the sync process, which will run periodically to keep your vault backed up.
+This will start the sync process, which will run periodically to keep your vault backed up. To stop it, use `deno task stop`.

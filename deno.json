@@ -11,7 +11,8 @@
     "format": "deno fmt",
     "format: check": "deno fmt --check",
     "typecheck": "deno check",
-    "run": "./watchdog.sh",
-    "stop": "./stop.sh"
+    "start": "deno run --allow-run --allow-read --allow-write --allow-env scripts.ts start",
+    "stop": "deno run --allow-run --allow-read --allow-env --allow-write scripts.ts stop",
+    "watch": "deno run --allow-run --allow-read --allow-write --allow-env scripts.ts watch"
   }
 }
