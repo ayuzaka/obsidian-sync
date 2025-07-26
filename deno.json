@@ -11,6 +11,7 @@
     "format": "deno fmt",
     "format: check": "deno fmt --check",
     "typecheck": "deno check",
-    "run": "./watchdog.sh"
+    "run": "./watchdog.sh",
+    "stop": "./stop.sh"
   }
 }
