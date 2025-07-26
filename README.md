@@ -1,21 +1,17 @@
 # obsidian-sync
 
-A Deno-based CLI tool to periodically back up and sync your Obsidian Vault to a
-remote Git repository (like GitHub).
+A Deno-based CLI tool to periodically back up and sync your Obsidian Vault to a remote Git repository (like GitHub).
 
 ## Overview
 
-This tool monitors your specified Obsidian Vault directory for any file changes.
-When changes are detected, it automatically performs the following Git
-operations:
+This tool monitors your specified Obsidian Vault directory for any file changes. When changes are detected, it automatically performs the following Git operations:
 
 - `git add .`
 - `git commit -m "vault backup: {current date and time}"`
 - `git pull`
 - `git push`
 
-This process runs automatically every minute, ensuring your work in Obsidian is
-consistently backed up and kept in sync with your remote repository.
+This process runs automatically at a configurable interval, ensuring your work in Obsidian is consistently backed up and kept in sync with your remote repository.
 
 ## How to Use
 
@@ -23,8 +19,7 @@ consistently backed up and kept in sync with your remote repository.
 
 - [Deno](https://deno.com/) must be installed.
 - [Git](https://git-scm.com/) must be installed.
-- Your target Obsidian Vault must be initialized as a Git repository, and a
-  remote repository must be configured.
+- Your target Obsidian Vault must be initialized as a Git repository, and a remote repository must be configured.
 
 ### 1. Create a Configuration File
 
@@ -43,37 +38,33 @@ Next, create the configuration file with the following content:
 ```json
 {
   "OBSIDIAN_VAULT_PATH": "/path/to/your/obsidian/vault",
-  "LOG_FILE_PATH": "/path/to/your/sync.log"
+  "LOG_FILE_PATH": "/path/to/your/sync.log",
+  "SYNC_INTERVAL_MINUTES": 15
 }
 ```
 
-- `OBSIDIAN_VAULT_PATH`: Specify the absolute path to the Obsidian Vault you
-  want to sync.
-- `LOG_FILE_PATH` (Optional): Specify the path for the log file. If omitted,
-  `sync.log` will be created in the project's root directory.
+- `OBSIDIAN_VAULT_PATH`: Specify the absolute path to the Obsidian Vault you want to sync.
+- `LOG_FILE_PATH` (Optional): Specify the path for the log file. If omitted, logging will be disabled.
+- `SYNC_INTERVAL_MINUTES` (Optional): The interval in minutes for the sync process. Defaults to `60` if not specified.
 
 ### 2. Run the Tool
 
-You can run the synchronization process in either the foreground or the
-background.
+You can run the synchronization process in either the foreground or the background.
 
-#### Foreground
+### Foreground
 
-To run the process in the foreground and see the output directly, use the
-following command:
+To run the process in the foreground and see the output directly, use the following command:
 
 ```sh
 deno task run
 ```
 
-#### Background
+### Background
 
-To run the process in the background, so it continues to run after you close the
-terminal, use `nohup`:
+To run the process in the background, so it continues to run after you close the terminal, use `nohup`:
 
 ```sh
 nohup deno task run &
 ```
 
-This will start the sync process, which will run periodically to keep your vault
-backed up.
+This will start the sync process, which will run periodically to keep your vault backed up.
